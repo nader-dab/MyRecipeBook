@@ -2,14 +2,14 @@ package com.naderdabour.myrecipebook.models;
 
 public class Product {
 
-	private int productId;
+	private long id;
 	private String name;
 	
-	public int getProductId() {
-		return productId;
+	public long getId() {
+		return id;
 	}
-	public void setProductId(int productId) {
-		this.productId = productId;
+	public void setId(long productId) {
+		this.id = productId;
 	}
 	public String getName() {
 		return name;

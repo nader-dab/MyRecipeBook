@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Recipe {
 
-	private int recipeId;
+	private long id;
 	private String name;
 	private Category category;
 	private List<Ingredient> ingredients;
@@ -17,11 +17,11 @@ public class Recipe {
 		ingredients = new ArrayList<Ingredient>();
 	}
 	
-	public int getRecipeId() {
-		return recipeId;
+	public long getId() {
+		return id;
 	}
-	public void setRecipeId(int recipeId) {
-		this.recipeId = recipeId;
+	public void setId(long recipeId) {
+		this.id = recipeId;
 	}
 	public String getName() {
 		return name;

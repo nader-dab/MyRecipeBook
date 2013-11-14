@@ -2,14 +2,14 @@ package com.naderdabour.myrecipebook.models;
 
 public class Measurement implements INameable {
 
-	private int meausermentId;
+	private long id;
 	private String name;
 	
-	public int getMeausermentId() {
-		return meausermentId;
+	public long getId() {
+		return id;
 	}
-	public void setMeausermentId(int meausermentId) {
-		this.meausermentId = meausermentId;
+	public void setId(long meausermentId) {
+		this.id = meausermentId;
 	}
 	public String getName() {
 		return name;
@@ -23,4 +23,3 @@ public class Measurement implements INameable {
 		return this.name;
 	}
 }
-

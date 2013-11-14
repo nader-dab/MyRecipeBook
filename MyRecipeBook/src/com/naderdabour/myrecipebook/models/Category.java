@@ -2,14 +2,14 @@ package com.naderdabour.myrecipebook.models;
 
 public class Category implements INameable {
 
-	private int categoryId;
+	private long id;
 	private String name;
 	
-	public int getCategoryId() {
-		return categoryId;
+	public long getId() {
+		return id;
 	}
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
+	public void setId(long categoryId) {
+		this.id = categoryId;
 	}
 	public String getName() {
 		return name;
