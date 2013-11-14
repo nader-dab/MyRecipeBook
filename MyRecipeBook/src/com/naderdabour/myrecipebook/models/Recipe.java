@@ -1,9 +1,5 @@
 package com.naderdabour.myrecipebook.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class Recipe {
 
 	private long id;

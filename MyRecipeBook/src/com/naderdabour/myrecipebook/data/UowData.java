@@ -1,8 +1,6 @@
 package com.naderdabour.myrecipebook.data;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
@@ -13,14 +11,14 @@ import com.naderdabour.myrecipebook.models.Measurement;
 import com.naderdabour.myrecipebook.models.Product;
 import com.naderdabour.myrecipebook.models.Recipe;
 
-public class UowData implements IUowData {
+public class UowData implements IUowData, IReadable {
 
 	private IDatasource<Category> categoriesDatasource;
 	private IDatasource<Product> productsDatasource;
 	private IDatasource<Measurement> measurementDatasource;
 	private IDatasource<Ingredient> ingredientsDatasource;
 	private IDatasource<Recipe> recipesDatasource;
-	private List<IDatasource> datasources;
+	private List<IReadable> datasources;
 	
 	public UowData(Context context){
 		categoriesDatasource = new CategoryDatasource(context); 
@@ -29,13 +27,13 @@ public class UowData implements IUowData {
 		ingredientsDatasource = new IngredientDatasource(context); 
 		recipesDatasource = new RecipeDatasource(context); 
 		
-		datasources = new ArrayList<IDatasource>();
+		datasources = new ArrayList<IReadable>();
 		
-		datasources.add(categoriesDatasource);
-		datasources.add(productsDatasource);
-		datasources.add(measurementDatasource);
-		datasources.add(ingredientsDatasource);
-		datasources.add(recipesDatasource);
+		datasources.add((IReadable)categoriesDatasource);
+		datasources.add((IReadable)productsDatasource);
+		datasources.add((IReadable)measurementDatasource);
+		datasources.add((IReadable)ingredientsDatasource);
+		datasources.add((IReadable)recipesDatasource);
 	}
 	
 	@Override
@@ -63,16 +61,14 @@ public class UowData implements IUowData {
 		return recipesDatasource;
 	}
 
-	@Override
 	public void open() {
-		for (IDatasource datasource : datasources) {
+		for (IReadable datasource : datasources) {
 			datasource.open();
 		}
 	}
 
-	@Override
 	public void close() {
-		for (IDatasource datasource : datasources) {
+		for (IReadable datasource : datasources) {
 			datasource.close();
 		}
 	}

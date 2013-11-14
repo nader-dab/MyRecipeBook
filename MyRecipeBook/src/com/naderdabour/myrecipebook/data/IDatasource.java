@@ -4,9 +4,6 @@ import java.util.List;
 
 public interface IDatasource<E> {
 
-	void open();
-	void close();
-	
 	E create(E entry);
 	int update(E entry);
 	List<E> findAll();

@@ -38,6 +38,7 @@ public class ProductDatasource extends GenericDatasource<Product> {
 
 	@Override
 	protected void setEntryId(Product entry, long insertId) {
+		
 		entry.setId(insertId);
 	}
 

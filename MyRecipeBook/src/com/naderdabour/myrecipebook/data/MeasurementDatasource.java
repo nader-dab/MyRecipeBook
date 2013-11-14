@@ -22,6 +22,7 @@ public class MeasurementDatasource extends GenericDatasource<Measurement> {
 
 	@Override
 	protected ContentValues entryToContentValues(Measurement entry) {
+		
 		ContentValues values = new ContentValues();
 		
 		values.put(DatabaseHelper.TABLE_MEASUREMENT_NAME, entry.getName());
@@ -37,12 +38,15 @@ public class MeasurementDatasource extends GenericDatasource<Measurement> {
 	
 	@Override
 	protected void setEntryId(Measurement entry, long insertId) {
+		
 		entry.setId(insertId);
 	}
 
 	@Override
 	protected List<Measurement> cursorToList(Cursor cursor) {
+		
 		List<Measurement> measurements = new ArrayList<Measurement>();
+		
 		if(cursor.getCount() > 0){
 			
 			while (cursor.moveToNext()) {

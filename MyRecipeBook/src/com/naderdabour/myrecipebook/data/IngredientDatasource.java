@@ -7,11 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.naderdabour.myrecipebook.models.Category;
 import com.naderdabour.myrecipebook.models.Ingredient;
-import com.naderdabour.myrecipebook.models.Measurement;
-import com.naderdabour.myrecipebook.models.Product;
-import com.naderdabour.myrecipebook.models.Recipe;
 
 public class IngredientDatasource extends GenericDatasource<Ingredient> {
 
@@ -23,10 +19,8 @@ public class IngredientDatasource extends GenericDatasource<Ingredient> {
 		DatabaseHelper.TABLE_INGREDIENT_RECIPE_ID
 	};
 	
-	private Context context;
 	public IngredientDatasource(Context context) {
 		super(context, DatabaseHelper.TABLE_INGREDIENT, allColumns);
-		this.context = context;
 	}
 
 	@Override
