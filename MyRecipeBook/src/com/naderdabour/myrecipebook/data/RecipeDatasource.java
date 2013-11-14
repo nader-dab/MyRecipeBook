@@ -40,8 +40,8 @@ public class RecipeDatasource extends GenericDatasource<Recipe> {
 		Log.v("RecipeDatasource","Details OK");
 		values.put(DatabaseHelper.TABLE_RECIPE_IMAGE, entry.getImage());
 		Log.v("RecipeDatasource","Image OK");
-		values.put(DatabaseHelper.TABLE_RECIPE_CATEGORY_ID, entry.getCategory().getId());
-		Log.v("RecipeDatasource","Category.getId() OK");
+		values.put(DatabaseHelper.TABLE_RECIPE_CATEGORY_ID, entry.getCategoryId());
+		Log.v("RecipeDatasource","CategoryId OK");
 		return values;
 	}
 
@@ -50,8 +50,6 @@ public class RecipeDatasource extends GenericDatasource<Recipe> {
 		
 		return entry.getId();
 	}
-
-
 
 	@Override
 	protected void setEntryId(Recipe entry, long insertId) {
@@ -76,28 +74,9 @@ public class RecipeDatasource extends GenericDatasource<Recipe> {
 				Log.v("RecipeDatasource","cursorToList setImage");
 				recipe.setDetails(cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_DETAILS)));
 				Log.v("RecipeDatasource","cursorToList setDetails");
-				
-				CategoryDatasource categoryDatasource = new CategoryDatasource(context);
-				Log.v("RecipeDatasource","cursorToList got categoryDatasource");
-				
-				long categoryId = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_CATEGORY_ID));
-				Log.v("RecipeDatasource","cursorToList got categoryId " + categoryId);
-				boolean categoryDatasourceIsNull = categoryDatasource == null;
-				Log.v("RecipeDatasource","cursorToList categoryDatasourceIsNull " + categoryDatasourceIsNull);
-				
-				Category category = categoryDatasource.findById(categoryId);
-				
-				Log.v("RecipeDatasource","cursorToList found category");
-				recipe.setCategory(category);
+				recipe.setCategoryId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_CATEGORY_ID)));
 				Log.v("RecipeDatasource","cursorToList setCategory");
-				IngredientDatasource ingredientDatasource = new IngredientDatasource(context);
-				Log.v("RecipeDatasource","cursorToList got ingredientDatasource");	
-				String where = DatabaseHelper.TABLE_INGREDIENT_RECIPE_ID + "=" + recipe.getId();
-				Log.v("RecipeDatasource","cursorToList where string: " + where);	
-				List<Ingredient> ingredients = ingredientDatasource.findFiltered(where, null);
-				Log.v("RecipeDatasource","cursorToList got ingredients list");	
-				recipe.setIngredients(ingredients);
-				Log.v("RecipeDatasource","cursorToList setIngredients");	
+				
 				recipes.add(recipe);
 			}
 		}

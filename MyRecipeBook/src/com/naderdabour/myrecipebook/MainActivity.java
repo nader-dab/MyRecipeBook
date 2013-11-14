@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.naderdabour.myrecipebook.data.DatabaseHelper;
+import com.naderdabour.myrecipebook.data.IUowData;
 import com.naderdabour.myrecipebook.data.UowData;
 import com.naderdabour.myrecipebook.models.*;
 
@@ -14,7 +15,7 @@ import android.view.Menu;
 
 public class MainActivity extends Activity {
 
-	private UowData uowData;
+	private IUowData uowData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,51 +44,96 @@ public class MainActivity extends Activity {
         	measurements = uowData.getMeasurements().findAll();
         }
         
-//        Log.v("Start", "Start");
-//        List<Recipe> recipes = uowData.getRecipes().findAll();
-//        Log.v("Finish", "Finish");
-//        if(recipes.size()== 0){
-//        	initRecipes();
-//        	recipes = uowData.getRecipes().findAll();
-//        }
-//        Log.v("Recipe", "count " + recipes.size());
-//        
-//        for (Recipe recipe : recipes) {
-//			Log.v("Recipe", recipe.toString());
-//		}
-
+        List<Recipe> recipes = uowData.getRecipes().findAll();
+        
+        if(recipes.size()== 0){
+        	initRecipes();
+        	recipes = uowData.getRecipes().findAll();
+        }
+        
+        List<Ingredient> ingredients = uowData.getIngredients().findAll();
+        
+        if(ingredients.size()== 0){
+        	initIngredients();
+        	ingredients = uowData.getIngredients().findAll();
+        }
+        
+        for (Ingredient ingredient : ingredients) {
+			Log.v("Ingredient", ingredient.toString());
+		}
     }
     
+	private void initIngredients() {
+		
+		Ingredient ingredient;
+
+		ingredient = new Ingredient();
+		ingredient.setMeasurementId(5);
+		ingredient.setProductId(0);
+		ingredient.setQuantity(1);
+		uowData.getIngredients().create(ingredient);
+
+		ingredient = new Ingredient();
+		ingredient.setMeasurementId(6);
+		ingredient.setProductId(5);
+		ingredient.setQuantity(2);
+		uowData.getIngredients().create(ingredient);
+
+		ingredient = new Ingredient();
+		ingredient.setMeasurementId(0);
+		ingredient.setProductId(7);
+		ingredient.setQuantity(3);
+		uowData.getIngredients().create(ingredient);
+
+		ingredient = new Ingredient();
+		ingredient.setMeasurementId(6);
+		ingredient.setProductId(6);
+		ingredient.setQuantity(1);
+		uowData.getIngredients().create(ingredient);
+		
+		ingredient = new Ingredient();
+		ingredient.setMeasurementId(1);
+		ingredient.setProductId(1);
+		ingredient.setQuantity(500);
+		uowData.getIngredients().create(ingredient);
+
+		ingredient = new Ingredient();
+		ingredient.setMeasurementId(0);
+		ingredient.setProductId(2);
+		ingredient.setQuantity(3);
+		uowData.getIngredients().create(ingredient);
+
+		ingredient = new Ingredient();
+		ingredient.setMeasurementId(6);
+		ingredient.setProductId(6);
+		ingredient.setQuantity(2);
+		uowData.getIngredients().create(ingredient);
+		
+	}
+
 	private void initRecipes() {
-		
-		
+
 		Recipe recipe;
 		
 		recipe = new Recipe();
-		recipe.setCategory(uowData.getCategories().findById(1));
+		recipe.setCategoryId(1);
 		recipe.setName("Chicken with sweet potatoes");
 		recipe.setImage("(None)");
 		recipe.setDetails("Everything is put in an oven for 25 minutes. Very tasty.");
-		
-		recipe = uowData.getRecipes().create(recipe);
-		
-		
+		uowData.getRecipes().create(recipe);
+
 		recipe = new Recipe();
-		recipe.setCategory(uowData.getCategories().findById(4));
+		recipe.setCategoryId(4);
 		recipe.setName("Egg omllet");
 		recipe.setImage("(None)");
 		recipe.setDetails("Fry egss in a pan for 5-10 minutes.");
-		recipe = uowData.getRecipes().create(recipe);
+		uowData.getRecipes().create(recipe);
 		
 	}
 
 	private void initMeasurements() {
 		
 		Measurement measurement;
-		
-		measurement = new Measurement();
-		measurement.setName("");
-		uowData.getMeasurements().create(measurement);
 		
 		measurement = new Measurement();
 		measurement.setName("gram(s)");

@@ -4,8 +4,8 @@ package com.naderdabour.myrecipebook.models;
 public class Ingredient {
 
 	private long id;
-	private Product product;
-	private Measurement measurement;
+	private long productId;
+	private long measurementId;
 	private double quantity;
 	private long recipeId;
 	
@@ -15,17 +15,17 @@ public class Ingredient {
 	public void setId(long ingredientId) {
 		this.id = ingredientId;
 	}
-	public Product getProduct() {
-		return product;
+	public long getProductId() {
+		return productId;
 	}
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductId(long productId) {
+		this.productId = productId;
 	}
-	public Measurement getMeasurement() {
-		return measurement;
+	public long getMeasurementId() {
+		return measurementId;
 	}
-	public void setMeasurement(Measurement measurement) {
-		this.measurement = measurement;
+	public void setMeasurementId(long measurementId) {
+		this.measurementId = measurementId;
 	}
 	public double getQuantity() {
 		return quantity;
@@ -42,15 +42,7 @@ public class Ingredient {
 	}
 	@Override
 	public String toString() {
-		
-		if (this.measurement.toString().length() == 0) {
-			
-			return this.quantity +  " " + this.product;
-			
-		} else {
-			
-			return this.quantity + " " + this.measurement + " " + this.product;
-		}
+			return this.quantity + " measurementId " + this.measurementId + " productId " + this.productId;
 	}
 }
 

@@ -35,8 +35,8 @@ public class IngredientDatasource extends GenericDatasource<Ingredient> {
 		ContentValues values = new ContentValues();
 		
 		values.put(DatabaseHelper.TABLE_INGREDIENT_QUANTITY, entry.getQuantity());
-		values.put(DatabaseHelper.TABLE_INGREDIENT_MEASUREMENT_ID, entry.getMeasurement().getId());
-		values.put(DatabaseHelper.TABLE_INGREDIENT_PRODUCT_ID, entry.getProduct().getId());
+		values.put(DatabaseHelper.TABLE_INGREDIENT_MEASUREMENT_ID, entry.getMeasurementId());
+		values.put(DatabaseHelper.TABLE_INGREDIENT_PRODUCT_ID, entry.getProductId());
 		values.put(DatabaseHelper.TABLE_INGREDIENT_RECIPE_ID, entry.getRecipeId());
 		return values;
 	}
@@ -62,18 +62,9 @@ public class IngredientDatasource extends GenericDatasource<Ingredient> {
 				Ingredient ingredient = new Ingredient();
 				ingredient.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_ID)));
 				ingredient.setQuantity(cursor.getDouble(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_QUANTITY)));
-
-				
-				MeasurementDatasource measurementDatasource = new MeasurementDatasource(context);
-				Measurement measurement = measurementDatasource.findById(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_MEASUREMENT_ID)));
-				ingredient.setMeasurement(measurement);
-
-				ProductDatasource productDatasource = new ProductDatasource(context);
-				Product product = productDatasource.findById(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_PRODUCT_ID)));
-				ingredient.setProduct(product);
-				
+				ingredient.setMeasurementId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_MEASUREMENT_ID)));
+				ingredient.setProductId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_PRODUCT_ID)));
 				ingredient.setRecipeId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_RECIPE_ID)));
-
 				ingredients.add(ingredient);
 			}
 		}
