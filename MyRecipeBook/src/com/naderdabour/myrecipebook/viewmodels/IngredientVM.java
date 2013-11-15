@@ -3,10 +3,20 @@ package com.naderdabour.myrecipebook.viewmodels;
 public class IngredientVM {
 
 	private long id;
-	private ProductVM product;
-	private MeasurementVM measurement;
 	private double quantity;
+	private MeasurementVM measurement;
+	private ProductVM product;
 	
+	public IngredientVM() {
+	}
+	
+	public IngredientVM(long id, double quantity, MeasurementVM measurement,
+			ProductVM product) {
+		this.id = id;
+		this.quantity = quantity;
+		this.measurement = measurement;
+		this.product = product;
+	}
 	public long getId() {
 		return id;
 	}
@@ -35,6 +45,6 @@ public class IngredientVM {
 	@Override
 	public String toString() {
 		
-		return quantity + " " + measurement.getName() + " " + product.getName();
+		return this.quantity + " " + this.measurement + " " + this.product;
 	}
 }

@@ -50,9 +50,11 @@ public class MeasurementDatasource extends GenericDatasource<Measurement> {
 		if(cursor.getCount() > 0){
 			
 			while (cursor.moveToNext()) {
-				Measurement measurement = new Measurement();
-				measurement.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_MEASUREMENT_ID)));
-				measurement.setName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_MEASUREMENT_NAME)));
+				
+				long id = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_MEASUREMENT_ID));
+				String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_MEASUREMENT_NAME));
+				
+				Measurement measurement = new Measurement(id, name);
 				measurements.add(measurement);
 			}
 		}

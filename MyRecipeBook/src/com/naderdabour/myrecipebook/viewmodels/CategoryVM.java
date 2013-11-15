@@ -5,6 +5,13 @@ public class CategoryVM {
 	private long id;
 	private String name;
 	
+	public CategoryVM() {
+	}
+	
+	public CategoryVM(long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 	public long getId() {
 		return id;
 	}

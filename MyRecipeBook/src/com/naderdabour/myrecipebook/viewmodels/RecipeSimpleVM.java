@@ -5,6 +5,18 @@ public class RecipeSimpleVM {
 	private String name;
 	private CategoryVM category;
 	private String image;
+	
+	public RecipeSimpleVM() {
+	}
+	
+	public RecipeSimpleVM(long id, String name, CategoryVM category,
+			String image) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.category = category;
+		this.image = image;
+	}
 	public long getId() {
 		return id;
 	}
@@ -28,5 +40,11 @@ public class RecipeSimpleVM {
 	}
 	public void setImage(String image) {
 		this.image = image;
+	}
+	
+	@Override
+	public String toString() {
+	
+		return this.category + " " + this.name + " " + this.image;
 	}
 }

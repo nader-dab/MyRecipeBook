@@ -4,6 +4,13 @@ public class ProductVM {
 	private long id;
 	private String name;
 	
+	public ProductVM() {
+	}
+	
+	public ProductVM(long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 	public long getId() {
 		return id;
 	}

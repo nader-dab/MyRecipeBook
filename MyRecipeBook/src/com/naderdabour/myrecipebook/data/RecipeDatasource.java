@@ -54,13 +54,14 @@ public class RecipeDatasource extends GenericDatasource<Recipe> {
 		if(cursor.getCount() > 0){
 			
 			while (cursor.moveToNext()) {
-				Recipe recipe = new Recipe();
-				recipe.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_ID)));
-				recipe.setName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_NAME)));
-				recipe.setImage(cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_IMAGE)));
-				recipe.setDetails(cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_DETAILS)));
-				recipe.setCategoryId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_CATEGORY_ID)));
 				
+				long id = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_ID));
+				long categoryId = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_CATEGORY_ID));
+				String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_NAME));
+				String details = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_DETAILS));
+				String image = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_RECIPE_IMAGE));
+
+				Recipe recipe = new Recipe(id, categoryId, name, details, image);
 				recipes.add(recipe);
 			}
 		}

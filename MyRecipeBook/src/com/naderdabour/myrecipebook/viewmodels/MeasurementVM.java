@@ -5,6 +5,13 @@ public class MeasurementVM {
 	private long id;
 	private String name;
 	
+	public MeasurementVM() {
+	}
+	
+	public MeasurementVM(long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 	public long getId() {
 		return id;
 	}

@@ -96,67 +96,84 @@ public class DbInitializer {
 	
 	private static void initRecipes(IUowData uowData){
 
+		if(uowData.getRecipes().findAll().size() != 0){
+
+			return;
+		}
+		
 		Recipe recipe;
 		
 		recipe = new Recipe();
 		recipe.setCategoryId(1);
 		recipe.setName("Chicken with sweet potatoes");
-		recipe.setImage("(None)");
+		recipe.setImage("image1");
 		recipe.setDetails("Everything is put in an oven for 25 minutes. Very tasty.");
 		uowData.getRecipes().create(recipe);
 
 		recipe = new Recipe();
 		recipe.setCategoryId(4);
 		recipe.setName("Egg omllet");
-		recipe.setImage("(None)");
+		recipe.setImage("image4");
 		recipe.setDetails("Fry egss in a pan for 5-10 minutes.");
 		uowData.getRecipes().create(recipe);
 	}
 
 	private static void initIngredients(IUowData uowData) {
 		
+		if(uowData.getIngredients().findAll().size() != 0){
+
+			return;
+		}
+
 		Ingredient ingredient;
 
 		ingredient = new Ingredient();
 		ingredient.setMeasurementId(5);
-		ingredient.setProductId(0);
+		ingredient.setProductId(1);
 		ingredient.setQuantity(1);
+		ingredient.setRecipeId(1);
 		uowData.getIngredients().create(ingredient);
 
 		ingredient = new Ingredient();
 		ingredient.setMeasurementId(6);
 		ingredient.setProductId(5);
 		ingredient.setQuantity(2);
+		ingredient.setRecipeId(1);
 		uowData.getIngredients().create(ingredient);
 
 		ingredient = new Ingredient();
-		ingredient.setMeasurementId(0);
-		ingredient.setProductId(7);
+		ingredient.setMeasurementId(1);
+		ingredient.setProductId(6);
 		ingredient.setQuantity(3);
+		ingredient.setRecipeId(1);
 		uowData.getIngredients().create(ingredient);
 
 		ingredient = new Ingredient();
-		ingredient.setMeasurementId(6);
+		ingredient.setMeasurementId(5);
 		ingredient.setProductId(6);
 		ingredient.setQuantity(1);
+		ingredient.setRecipeId(1);
 		uowData.getIngredients().create(ingredient);
 		
 		ingredient = new Ingredient();
 		ingredient.setMeasurementId(1);
 		ingredient.setProductId(1);
 		ingredient.setQuantity(500);
+		ingredient.setRecipeId(1);
 		uowData.getIngredients().create(ingredient);
 
 		ingredient = new Ingredient();
-		ingredient.setMeasurementId(0);
-		ingredient.setProductId(2);
+		ingredient.setMeasurementId(9);
+		ingredient.setProductId(3);
 		ingredient.setQuantity(3);
+		ingredient.setRecipeId(2);
 		uowData.getIngredients().create(ingredient);
 
 		ingredient = new Ingredient();
 		ingredient.setMeasurementId(6);
-		ingredient.setProductId(6);
+		ingredient.setProductId(7);
 		ingredient.setQuantity(2);
+		ingredient.setRecipeId(2);
 		uowData.getIngredients().create(ingredient);
 	}
 }

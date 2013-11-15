@@ -3,11 +3,22 @@ package com.naderdabour.myrecipebook.models;
 public class Recipe {
 
 	private long id;
-	private String name;
 	private long categoryId;
+	private String name;
 	private String details;
 	private String image;
-
+	
+	public Recipe() {
+	}
+	
+	public Recipe(long id, long categoryId, String name, String details,
+			String image) {
+		this.id = id;
+		this.categoryId = categoryId;
+		this.name = name;
+		this.details = details;
+		this.image = image;
+	}
 	public long getId() {
 		return id;
 	}

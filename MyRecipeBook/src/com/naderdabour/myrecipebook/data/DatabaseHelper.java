@@ -9,7 +9,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static DatabaseHelper databaseHelperInstance = null;
 	
 	private static final String DATABASE_NAME = "myrecipebook.db";
-	private static final int DATABASE_VERSION = 6;
+	private static final int DATABASE_VERSION = 8;
 	
 	public static final String TABLE_CATEGORY = "categories";
 	public static final String TABLE_CATEGORY_ID = "categoryId";
@@ -72,6 +72,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			"FOREIGN KEY(" + TABLE_INGREDIENT_RECIPE_ID +") REFERENCES " + TABLE_RECIPE + "(" + TABLE_RECIPE_ID + ")" +
 			")";
 
+	// Singleton instance to ensure only one database instance for the entire
+	// application's lifecycle.
 	public static DatabaseHelper getInstance(Context context){
 		
 		if(databaseHelperInstance == null){

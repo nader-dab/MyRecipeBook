@@ -8,14 +8,23 @@ public class RecipeFullVM {
 	private long id;
 	private String name;
 	private CategoryVM category;
-	private String details;
 	private String image;
 	private List<IngredientVM> ingredients;
+	private String details;
 	
 	public RecipeFullVM(){
 		this.ingredients = new ArrayList<IngredientVM>();
 	}
-	
+
+	public RecipeFullVM(long id, String name, CategoryVM category,
+			String image, List<IngredientVM> ingredients, String details) {
+		this.id = id;
+		this.name = name;
+		this.category = category;
+		this.image = image;
+		this.ingredients = ingredients;
+		this.details = details;
+	}
 	public long getId() {
 		return id;
 	}
@@ -62,5 +71,24 @@ public class RecipeFullVM {
 
 	public void setIngredients(List<IngredientVM> ingredients) {
 		this.ingredients = ingredients;
+	}
+	
+	@Override
+	public String toString() {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(this.category + "\n");
+		sb.append(this.name + "\n");
+		sb.append(this.image + "\n");
+		
+		for (IngredientVM ingredient : this.ingredients) {
+			
+			sb.append(ingredient + "\n");
+		}
+
+		sb.append(this.details + "\n");
+		
+		return sb.toString();
 	}
 }

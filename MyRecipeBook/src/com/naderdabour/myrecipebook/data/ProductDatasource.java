@@ -49,9 +49,11 @@ public class ProductDatasource extends GenericDatasource<Product> {
 		if(cursor.getCount() > 0){
 			
 			while (cursor.moveToNext()) {
-				Product product = new Product();
-				product.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_PRODUCT_ID)));
-				product.setName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_PRODUCT_NAME)));
+				
+				long id = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_PRODUCT_ID));
+				String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_PRODUCT_NAME));
+				
+				Product product = new Product(id, name);
 				products.add(product);
 			}
 		}

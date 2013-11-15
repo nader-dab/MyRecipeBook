@@ -45,9 +45,11 @@ public class CategoryDatasource extends GenericDatasource<Category> {
 		if(cursor.getCount() > 0){
 			
 			while (cursor.moveToNext()) {
-				Category category = new Category();
-				category.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_CATEGORY_ID)));
-				category.setName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_CATEGORY_NAME)));
+				
+				long id = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_CATEGORY_ID));
+				String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.TABLE_CATEGORY_NAME));
+				
+				Category category = new Category(id, name);
 				categories.add(category);
 			}
 		}

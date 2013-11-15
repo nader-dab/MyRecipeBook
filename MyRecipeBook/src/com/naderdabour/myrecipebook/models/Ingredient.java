@@ -1,14 +1,24 @@
 package com.naderdabour.myrecipebook.models;
 
-
 public class Ingredient {
 
 	private long id;
-	private long productId;
-	private long measurementId;
 	private double quantity;
+	private long measurementId;
+	private long productId;
 	private long recipeId;
 	
+	public Ingredient() {
+	}
+	
+	public Ingredient(long id, double quantity, long measurementId, 
+			long productId, long recipeId) {
+		this.id = id;
+		this.productId = productId;
+		this.measurementId = measurementId;
+		this.quantity = quantity;
+		this.recipeId = recipeId;
+	}
 	public long getId() {
 		return id;
 	}

@@ -53,12 +53,14 @@ public class IngredientDatasource extends GenericDatasource<Ingredient> {
 		if(cursor.getCount() > 0){
 			
 			while (cursor.moveToNext()) {
-				Ingredient ingredient = new Ingredient();
-				ingredient.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_ID)));
-				ingredient.setQuantity(cursor.getDouble(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_QUANTITY)));
-				ingredient.setMeasurementId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_MEASUREMENT_ID)));
-				ingredient.setProductId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_PRODUCT_ID)));
-				ingredient.setRecipeId(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_RECIPE_ID)));
+				
+				long id = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_ID));
+				double quantity = cursor.getDouble(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_QUANTITY));
+				long measurementId = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_MEASUREMENT_ID));
+				long productId = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_PRODUCT_ID));
+				long recipeId = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.TABLE_INGREDIENT_RECIPE_ID));
+				
+				Ingredient ingredient = new Ingredient(id, quantity, measurementId, productId, recipeId);
 				ingredients.add(ingredient);
 			}
 		}
