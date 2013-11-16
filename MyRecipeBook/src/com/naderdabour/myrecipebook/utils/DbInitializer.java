@@ -46,19 +46,29 @@ public class DbInitializer {
 
 	public static void init(IUowData uowData){
 
-		initCategories(uowData);
-		initProducts(uowData);
-		initMeasurements(uowData);
-		initRecipes(uowData);
-		initIngredients(uowData);
+		boolean categoriesIsEmpty = uowData.getCategories().findAll().size() == 0;
+		boolean productsIsEmpty = uowData.getProducts().findAll().size() == 0;
+		boolean measurementsIsEmpty = uowData.getMeasurements().findAll().size() == 0;
+		boolean recipesIsEmpty = uowData.getRecipes().findAll().size() == 0;
+		boolean ingredientsIsEmpty = uowData.getIngredients().findAll().size() == 0;
+
+		boolean dbIsEmpty = categoriesIsEmpty 
+				&& productsIsEmpty 
+				&& measurementsIsEmpty 
+				&& recipesIsEmpty
+				&& ingredientsIsEmpty;
+
+		if(dbIsEmpty) {
+
+			initCategories(uowData);
+			initProducts(uowData);
+			initMeasurements(uowData);
+			initRecipes(uowData);
+			initIngredients(uowData);
+		}
 	}
 
 	private static void initCategories(IUowData uowData) {
-
-		if(uowData.getCategories().findAll().size() != 0){
-
-			return;
-		}
 
 		for (String cat : categories) {
 			Category category= new Category();
@@ -68,10 +78,6 @@ public class DbInitializer {
 	}
 
 	private static void initProducts(IUowData uowData) {
-		if(uowData.getProducts().findAll().size() != 0){
-
-			return;
-		}
 
 		for (String prod : products) {
 			Product product = new Product();
@@ -79,13 +85,8 @@ public class DbInitializer {
 			uowData.getProducts().create(product);
 		}
 	}
-	
+
 	private static void initMeasurements(IUowData uowData) {
-
-		if(uowData.getMeasurements().findAll().size() != 0){
-
-			return;
-		}
 
 		for (String mes : measurements) {
 			Measurement measurement = new Measurement();
@@ -93,16 +94,11 @@ public class DbInitializer {
 			uowData.getMeasurements().create(measurement);
 		}
 	}
-	
+
 	private static void initRecipes(IUowData uowData){
 
-		if(uowData.getRecipes().findAll().size() != 0){
-
-			return;
-		}
-		
 		Recipe recipe;
-		
+
 		recipe = new Recipe();
 		recipe.setCategoryId(1);
 		recipe.setName("Chicken with sweet potatoes");
@@ -119,11 +115,6 @@ public class DbInitializer {
 	}
 
 	private static void initIngredients(IUowData uowData) {
-		
-		if(uowData.getIngredients().findAll().size() != 0){
-
-			return;
-		}
 
 		Ingredient ingredient;
 
@@ -154,10 +145,10 @@ public class DbInitializer {
 		ingredient.setQuantity(1);
 		ingredient.setRecipeId(1);
 		uowData.getIngredients().create(ingredient);
-		
+
 		ingredient = new Ingredient();
 		ingredient.setMeasurementId(1);
-		ingredient.setProductId(1);
+		ingredient.setProductId(2);
 		ingredient.setQuantity(500);
 		ingredient.setRecipeId(1);
 		uowData.getIngredients().create(ingredient);

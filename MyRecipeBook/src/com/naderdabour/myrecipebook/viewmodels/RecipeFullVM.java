@@ -38,6 +38,7 @@ public class RecipeFullVM implements Parcelable {
 			ingredients = new ArrayList<IngredientVM>();
 		}
 		in.readTypedList(ingredients, IngredientVM.CREATOR);
+		this.details = in.readString();
 	}
 	public long getId() {
 		return id;

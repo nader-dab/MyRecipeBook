@@ -39,10 +39,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/recipe_title_hint"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:singleLine="true" >
-
-                <requestFocus />
             </EditText>
         </TableRow>
 
@@ -81,15 +79,17 @@
             android:layout_height="wrap_content"
             android:background="#444444" >
 
-            <TextView
-                android:id="@+id/ingredientsTitleTextView"
+            <Button
+                android:id="@+id/ingredientAddButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="@dimen/padding"
-                android:text="@string/recipe_ingredients"
+                android:background="#444444"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/padding"
+                android:text="@string/ingredient_title"
                 android:textAppearance="@android:style/TextAppearance.Large"
-                android:textColor="@android:color/white" />
+                android:textColor="#FFFFFF" />
         </TableRow>
 
         <TableRow
@@ -142,7 +142,7 @@
                 android:ems="10"
                 android:gravity="top"
                 android:hint="@string/recipe_details_hint"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:singleLine="false" >
             </EditText>
         </TableRow>
@@ -158,7 +158,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#444444"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/padding"
                 android:text="@string/recipe_create_button"
+                android:textAppearance="@android:style/TextAppearance.Large"
                 android:textColor="#FFFFFF" />
         </TableRow>
     </TableLayout>

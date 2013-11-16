@@ -25,12 +25,14 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends ListActivity {
 
 	public static final String RECIPE_VIEW_MODEL = ".viewmodels.RecipeFullVM";
 	public static final String CATEGORY_VIEW_MODEL = ".viewmodels.CategoryVM";
 	public static final String MEASUREMENT_VIEW_MODEL = ".viewmodels.MeasurementVM";
+	public static final String CATEGORY_IMAGE = "category_image";
 
 	public static final String NEW_RECIPE = "com.naderdabour.myrecipebook.NEW_RECIPE";
 	public static final String EDIT_RECIPE = "com.naderdabour.myrecipebook.EDIT_RECIPE";
@@ -126,7 +128,7 @@ public class MainActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.add_recipe: addRecipe();
+		case R.id.add_recipe: addRecipeActivity();
 		break;
 		default:
 			break;
@@ -143,12 +145,23 @@ public class MainActivity extends ListActivity {
 		refreshDisplay();
 		
 	}
-	private void addRecipe() {
+	
+	private void addRecipeActivity() {
 
-		Intent intent = new Intent(MainActivity.this, EditRecipeActivity.class);
-		
 		RecipeFullVM recipeToCreate = new RecipeFullVM();
 
+		Intent intent = new Intent(MainActivity.this, EditRecipeActivity.class);
+
+		putSpinnerData(intent);
+		
+		intent.putExtra(NEW_RECIPE, true);
+		intent.putExtra(RECIPE_VIEW_MODEL, recipeToCreate);
+
+		startActivityForResult(intent, ADD_RECIPE_ACTIVITY);
+	}
+	
+	private void putSpinnerData(Intent intent) {
+		
 		List<Category> categories = uowData.getCategories().findAll();
 		List<Measurement> measurements = uowData.getMeasurements().findAll();
 		
@@ -158,32 +171,87 @@ public class MainActivity extends ListActivity {
 		ArrayList<MeasurementVM> measurementsToDisplay = 
 				(ArrayList<MeasurementVM>) vmHelper.getMeasurementVM(measurements);
 		
-		intent.putExtra(RECIPE_VIEW_MODEL, recipeToCreate);
 		intent.putParcelableArrayListExtra(CATEGORY_VIEW_MODEL, categoriesToDisplay);
-		
-		
 		intent.putParcelableArrayListExtra(MEASUREMENT_VIEW_MODEL, measurementsToDisplay);
+	}
+
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
 		
-		startActivityForResult(intent, ADD_RECIPE_ACTIVITY);
+		RecipeFullVM recipe = vmHelper.getRecipeFullVM(recipes.get(position).getId());
+		
+		Intent intent = new Intent(this, EditRecipeActivity.class);	
+		putSpinnerData(intent);
+		intent.putExtra(RECIPE_VIEW_MODEL, recipe);
+    	intent.putExtra(EDIT_RECIPE, true);
+    	
+    	startActivityForResult(intent, EDIT_RECIPE_ACTIVITY);
 	}
 
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+		((IReadable) uowData).open();
+		
 		if(requestCode == ADD_RECIPE_ACTIVITY && resultCode == RESULT_OK){
 
 			RecipeFullVM recipeToAdd = data.getParcelableExtra(RECIPE_VIEW_MODEL);
+			
+			Log.v("recipeToAdd", recipeToAdd.toString());
+			addRecipeToDataStorage(recipeToAdd);
+			
+		} else if(requestCode == EDIT_RECIPE_ACTIVITY && resultCode == RESULT_OK){
+			
+			RecipeFullVM recipeToUpdate = data.getParcelableExtra(RECIPE_VIEW_MODEL);
+			deleteRecipe(recipeToUpdate.getId());
+			addRecipeToDataStorage(recipeToUpdate);
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
+	private void addRecipeToDataStorage(RecipeFullVM recipeToAdd) {
+		
+		Recipe recipe = new Recipe();
+		
+		recipe.setName(recipeToAdd.getName());
+		recipe.setCategoryId(recipeToAdd.getCategory().getId());
+		recipe.setDetails(recipeToAdd.getDetails());
+		Log.v("Main addRecipeToDataStorage details", recipe.getDetails());
+		recipe.setImage(recipeToAdd.getImage());
+		
+		recipe = uowData.getRecipes().create(recipe);
+		
+		for (IngredientVM ingredientVM : recipeToAdd.getIngredients()) {
+			
+			Product product = new Product();
+			product.setName(ingredientVM.getProduct().getName());
+			
+			product = uowData.getProducts().create(product);
+			
+			Ingredient ingredient = new Ingredient();
+			ingredient.setRecipeId(recipe.getId());
+			ingredient.setMeasurementId(ingredientVM.getMeasurement().getId());
+			ingredient.setProductId(product.getId());
+			ingredient.setQuantity(ingredientVM.getQuantity());
+			
+			uowData.getIngredients().create(ingredient);
+		}
+		
+		recipes = uowData.getRecipes().findAll();
+		refreshDisplay();
+	}
+
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		if (uowData instanceof IReadable) {
 			((IReadable) uowData).open();
+			Log.v("uowData", "uowData open");
 		}
 	}
 
@@ -192,6 +260,7 @@ public class MainActivity extends ListActivity {
 		super.onPause();
 		if (uowData instanceof IReadable) {
 			((IReadable) uowData).close();
+			Log.v("uowData", "uowData close");
 		}
 	}
 }

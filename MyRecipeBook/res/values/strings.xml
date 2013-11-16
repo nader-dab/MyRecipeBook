@@ -17,9 +17,16 @@
     <string name="recipe_details">Details</string>
     <string name="recipe_details_hint">Enter Preparation Details</string>
     <string name="recipe_create_button">Create</string>
-    <string name="recipe_edit_button">Edit Recipe</string>
-    <string name="recipe_new_title">New Recipe</string>
+    <string name="recipe_edit_button">Update</string>
     <string name="recipe_delete">Delete Recipe</string>
+    <string name="recipe_new_title">New Recipe</string>
+    <string name="recipe_edit_title">View/Edit Recipe</string>
+    
+    <string name="recipe_not_saved">Recipe not Saved</string>
+    <string name="recipe_changes_lost">All changes will be lost</string>
+    
+    <string name="invalid_recipe">Invalid Recipe</string>
+    <string name="invalid_recipe_title">Recipe must contain Title</string>
     
 
     <string name="ingredient_title">Ingredient</string>

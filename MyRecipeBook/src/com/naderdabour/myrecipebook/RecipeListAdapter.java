@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class RecipeListAdapter extends ArrayAdapter<RecipeSimpleVM> {
-
-	private static final String CATEGORY_IMAGE = "category_image";
 	
 	private Context context;
 	
@@ -42,7 +40,7 @@ public class RecipeListAdapter extends ArrayAdapter<RecipeSimpleVM> {
 		recipeNameTextView.setText(currentRecipe.getName());
 
 		int imageResource = getImageRecource(currentRecipe.getImage());
-		int categoryImage = getImageRecource(CATEGORY_IMAGE + currentRecipe.getCategory().getId());
+		int categoryImage = getImageRecource(MainActivity.CATEGORY_IMAGE + currentRecipe.getCategory().getId());
 
 		if(imageResource != 0){
 			recipeImageView.setImageResource(imageResource);

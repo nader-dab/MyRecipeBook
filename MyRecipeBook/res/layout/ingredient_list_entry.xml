@@ -21,9 +21,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/ingredient_quantity"
-                android:inputType="numberSigned" >
-
-                <requestFocus />
+                android:inputType="numberDecimal" >
             </EditText>
         </TableRow>
 
@@ -51,7 +49,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/ingredient_product"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:singleLine="true" />
         </TableRow>
     </TableLayout>
