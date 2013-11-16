@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public abstract class GenericDatasource<E> implements IDatasource<E>, IReadable {
 
@@ -72,7 +73,7 @@ public abstract class GenericDatasource<E> implements IDatasource<E>, IReadable 
 	public boolean remove(long id) {
 		
 		String where = primaryKey + "=" + id;
-		
+		Log.v("Removing", "table " + tableName + " id" + id);
 		int rowsAffected =  database.delete(tableName, where, null);
 		
 		return (rowsAffected != 0);

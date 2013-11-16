@@ -1,6 +1,9 @@
 package com.naderdabour.myrecipebook.viewmodels;
 
-public class IngredientVM {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class IngredientVM implements Parcelable {
 
 	private long id;
 	private double quantity;
@@ -16,6 +19,13 @@ public class IngredientVM {
 		this.quantity = quantity;
 		this.measurement = measurement;
 		this.product = product;
+	}
+	
+	public IngredientVM(Parcel in){
+		this.id = in.readLong();
+		this.quantity = in.readDouble();
+		this.measurement = in.readParcelable(MeasurementVM.class.getClassLoader());
+		this.product = in.readParcelable(ProductVM.class.getClassLoader());
 	}
 	public long getId() {
 		return id;
@@ -47,4 +57,33 @@ public class IngredientVM {
 		
 		return this.quantity + " " + this.measurement + " " + this.product;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+
+		dest.writeLong(this.id);
+		dest.writeDouble(this.quantity);
+		dest.writeParcelable(this.measurement, flags);
+		dest.writeParcelable(this.product, flags);
+	}
+	
+	public static final Parcelable.Creator<IngredientVM> CREATOR = new Creator<IngredientVM>() {
+		
+		@Override
+		public IngredientVM[] newArray(int size) {
+		
+			return new IngredientVM[size];
+		}
+		
+		@Override
+		public IngredientVM createFromParcel(Parcel source) {
+			// TODO Auto-generated method stub
+			return new IngredientVM(source);
+		}
+	};
 }

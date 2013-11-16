@@ -1,6 +1,9 @@
 package com.naderdabour.myrecipebook.viewmodels;
 
-public class RecipeSimpleVM {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class RecipeSimpleVM implements Parcelable {
 	private long id;
 	private String name;
 	private CategoryVM category;
@@ -17,6 +20,14 @@ public class RecipeSimpleVM {
 		this.category = category;
 		this.image = image;
 	}
+	
+	public RecipeSimpleVM(Parcel in){
+		this.id = in.readLong();
+		this.name = in.readString();
+		this.category = in.readParcelable(CategoryVM.class.getClassLoader());
+		this.image = in.readString();
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -47,4 +58,34 @@ public class RecipeSimpleVM {
 	
 		return this.category + " " + this.name + " " + this.image;
 	}
+
+	@Override
+	public int describeContents() {
+	
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+
+		dest.writeLong(this.id);
+		dest.writeString(this.name);
+		dest.writeParcelable(this.category, flags);
+		dest.writeString(this.image);
+	}
+	
+	public static final Parcelable.Creator<RecipeSimpleVM> CREATOR = new Creator<RecipeSimpleVM>() {
+		
+		@Override
+		public RecipeSimpleVM[] newArray(int size) {
+			// TODO Auto-generated method stub
+			return new RecipeSimpleVM[size];
+		}
+		
+		@Override
+		public RecipeSimpleVM createFromParcel(Parcel source) {
+			// TODO Auto-generated method stub
+			return new RecipeSimpleVM(source);
+		}
+	};
 }

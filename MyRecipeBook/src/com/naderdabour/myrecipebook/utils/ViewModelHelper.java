@@ -18,34 +18,36 @@ import com.naderdabour.myrecipebook.viewmodels.RecipeFullVM;
 import com.naderdabour.myrecipebook.viewmodels.RecipeSimpleVM;
 
 public class ViewModelHelper {
-	private IUowData uowData;
 	
+	private IUowData uowData;
+
 	public ViewModelHelper(IUowData uowData){
 		this.uowData = uowData;
 	}
-	
+
 	public RecipeSimpleVM getRecipeSimpleVM(Recipe recipe){
-		
+
 		long id = recipe.getId();
 		String name = recipe.getName();
 		String image = recipe.getImage();
 		CategoryVM category = getCategoryVM(recipe.getCategoryId());
-		
+
 		RecipeSimpleVM recipeVm = new RecipeSimpleVM(id, name, category, image);
+
 		return recipeVm;
-		
 	}
+
 	public List<RecipeSimpleVM> getRecipeSimpleVM(List<Recipe> recipes){
-		
+
 		List<RecipeSimpleVM> vmListToReturn = new ArrayList<RecipeSimpleVM>();
 
 		for (Recipe recipe : recipes) {
 
 			RecipeSimpleVM recipeVm = getRecipeSimpleVM(recipe);
-		
+
 			vmListToReturn.add(recipeVm);
 		}
-		
+
 		return vmListToReturn;
 	}
 
@@ -56,7 +58,7 @@ public class ViewModelHelper {
 		Recipe recipe = uowData.getRecipes().findById(id);
 
 		if(recipe != null){
-			
+
 			vmToReturn = getRecipeSimpleVM(recipe);
 		}
 
@@ -76,6 +78,44 @@ public class ViewModelHelper {
 
 		return vmToReturn;
 	}
+
+	public List<CategoryVM> getCategoryVM(List<Category> categories){
+
+		List<CategoryVM> vmListToReturn = new ArrayList<CategoryVM>();
+
+		for (Category category : categories) {
+
+			CategoryVM categoryVM = new CategoryVM(category.getId(), category.getName());
+
+			vmListToReturn.add(categoryVM);
+		}
+
+		return vmListToReturn;
+	}
+
+	public List<IngredientVM> getIngredientVM(List<Ingredient> ingredients){
+
+		List<IngredientVM> ingredientsToDisplay = new ArrayList<IngredientVM>();
+
+		for (Ingredient ingredient : ingredients) {
+
+			MeasurementVM measurementToDisplay = getMeasurementVM(ingredient.getMeasurementId());
+
+			ProductVM productToDisplay = getProductVM(ingredient.getProductId());
+
+			IngredientVM ingredientToDisplay = 
+					new IngredientVM(
+							ingredient.getId(), 
+							ingredient.getQuantity(), 
+							measurementToDisplay, 
+							productToDisplay);
+
+			ingredientsToDisplay.add(ingredientToDisplay);
+		}
+
+		return ingredientsToDisplay;
+	}
+
 	public RecipeFullVM getRecipeFullVM(long id){
 
 		RecipeFullVM vmToReturn = null;
@@ -86,26 +126,11 @@ public class ViewModelHelper {
 
 			CategoryVM categoryToDisplay = getCategoryVM(recipe.getCategoryId());
 
-			List<Ingredient>ingredients = uowData.getIngredients()
-					.findFiltered(DatabaseHelper.TABLE_INGREDIENT_RECIPE_ID + "=" + recipe.getId(), null);
+			String where = DatabaseHelper.TABLE_INGREDIENT_RECIPE_ID + "=" + recipe.getId();
 
-			List<IngredientVM> ingredientsToDisplay = new ArrayList<IngredientVM>();
+			List<Ingredient>ingredients = uowData.getIngredients().findFiltered(where, null);
 
-			for (Ingredient ingredient : ingredients) {
-
-				MeasurementVM measurementToDisplay = getMeasurementVM(ingredient.getMeasurementId());
-
-				ProductVM productToDisplay = getProductVM(ingredient.getProductId());
-
-				IngredientVM ingredientToDisplay = 
-						new IngredientVM(
-								ingredient.getId(), 
-								ingredient.getQuantity(), 
-								measurementToDisplay, 
-								productToDisplay);
-
-				ingredientsToDisplay.add(ingredientToDisplay);
-			}
+			List<IngredientVM> ingredientsToDisplay = getIngredientVM(ingredients);
 
 			vmToReturn = new RecipeFullVM(
 					recipe.getId(),
@@ -125,6 +150,7 @@ public class ViewModelHelper {
 		Product product = uowData.getProducts().findById(id);
 
 		if(product != null){
+
 			vmToReturn = new ProductVM(id, product.getName());
 		}
 
@@ -138,8 +164,23 @@ public class ViewModelHelper {
 		Measurement measurement = uowData.getMeasurements().findById(id);
 
 		if(measurement != null){
+
 			vmToReturn = new MeasurementVM(id, measurement.getName());
 		}
 		return vmToReturn;
+	}
+
+	public List<MeasurementVM> getMeasurementVM(List<Measurement> measurements){
+
+		List<MeasurementVM> vmListToReturn = new ArrayList<MeasurementVM>();
+
+		for (Measurement measurement : measurements) {
+
+			MeasurementVM measurementVM = new MeasurementVM(measurement.getId(), measurement.getName());
+
+			vmListToReturn.add(measurementVM);
+		}
+
+		return vmListToReturn;
 	}
 }

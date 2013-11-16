@@ -1,6 +1,6 @@
 package com.naderdabour.myrecipebook.models;
 
-public class Measurement implements INameable {
+public class Measurement {
 
 	private long id;
 	private String name;

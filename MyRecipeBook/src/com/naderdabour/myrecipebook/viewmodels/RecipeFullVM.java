@@ -3,7 +3,10 @@ package com.naderdabour.myrecipebook.viewmodels;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeFullVM {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class RecipeFullVM implements Parcelable {
 	
 	private long id;
 	private String name;
@@ -24,6 +27,17 @@ public class RecipeFullVM {
 		this.image = image;
 		this.ingredients = ingredients;
 		this.details = details;
+	}
+	
+	public RecipeFullVM(Parcel in){
+		this.id = in.readLong();
+		this.name = in.readString();
+		this.category = in.readParcelable(CategoryVM.class.getClassLoader());
+		this.image = in.readString();
+		if(this.ingredients == null){
+			ingredients = new ArrayList<IngredientVM>();
+		}
+		in.readTypedList(ingredients, IngredientVM.CREATOR);
 	}
 	public long getId() {
 		return id;
@@ -91,4 +105,36 @@ public class RecipeFullVM {
 		
 		return sb.toString();
 	}
+
+	@Override
+	public int describeContents() {
+	
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+
+		dest.writeLong(this.id);
+		dest.writeString(this.name);
+		dest.writeParcelable(this.category, flags);		
+		dest.writeString(this.image);
+		dest.writeTypedList(this.ingredients);
+		dest.writeString(this.details);
+	}
+	
+	public static final Parcelable.Creator<RecipeFullVM> CREATOR = new Creator<RecipeFullVM>() {
+		
+		@Override
+		public RecipeFullVM[] newArray(int size) {
+			
+			return new RecipeFullVM[size];
+		}
+		
+		@Override
+		public RecipeFullVM createFromParcel(Parcel source) {
+			
+			return new RecipeFullVM(source);
+		}
+	};
 }

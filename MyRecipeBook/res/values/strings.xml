@@ -1,8 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MyRecipeBook</string>
+    <string name="app_name">Cook Book</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+
+    <string name="add_recipe">Add Recipe</string>
+    <string name="get_recipe">Get Recipes</string>
+    <string name="my_recipe">My Recipes</string>
+    
+    <string name="add_ingredient">Add Ingredient</string>
+    
+    <string name="recipe_title">Title</string>
+    <string name="recipe_title_hint">Enter Title</string>
+    <string name="recipe_category">Category</string>
+    <string name="recipe_ingredients">Ingredients</string>
+    <string name="recipe_details">Details</string>
+    <string name="recipe_details_hint">Enter Preparation Details</string>
+    <string name="recipe_create_button">Create</string>
+    <string name="recipe_edit_button">Edit Recipe</string>
+    <string name="recipe_new_title">New Recipe</string>
+    <string name="recipe_delete">Delete Recipe</string>
+    
+
+    <string name="ingredient_title">Ingredient</string>
+    <string name="ingredient_quantity">Enter Quantity</string>
+    <string name="ingredient_measurement">Select Measurement</string>
+    <string name="ingredient_product">Enter Product</string>
+    <string name="ingredient_remove">Remove ingredient</string>
+    
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    
+    <string name="image_description">Recipe</string>
 
 </resources>

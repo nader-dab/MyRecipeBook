@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1" >
+
+    <TableLayout
+        android:id="@+id/TableLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/tableRow0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#444444" >
+
+            <TextView
+                android:id="@+id/recipeTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/padding"
+                android:text="@string/recipe_title"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@android:color/white" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/recipeTitleEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/recipe_title_hint"
+                android:inputType="text"
+                android:singleLine="true" >
+
+                <requestFocus />
+            </EditText>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#444444" >
+
+            <TextView
+                android:id="@+id/categoryTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/padding"
+                android:text="@string/recipe_category"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@android:color/white" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#444444" >
+
+            <TextView
+                android:id="@+id/ingredientsTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/padding"
+                android:text="@string/recipe_ingredients"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@android:color/white" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TableLayout
+                android:id="@+id/ingredientsScrollViewTableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:stretchColumns="yes" >
+            </TableLayout>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#444444" >
+
+            <TextView
+                android:id="@+id/detailsTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/padding"
+                android:text="@string/recipe_details"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@android:color/white" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/recipeDetailsEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="@string/recipe_details_hint"
+                android:inputType="textMultiLine"
+                android:singleLine="false" >
+            </EditText>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/saveRecipeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#444444"
+                android:text="@string/recipe_create_button"
+                android:textColor="#FFFFFF" />
+        </TableRow>
+    </TableLayout>
+
+</ScrollView>

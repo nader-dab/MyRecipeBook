@@ -1,6 +1,6 @@
 package com.naderdabour.myrecipebook.models;
 
-public class Category implements INameable {
+public class Category {
 
 	private long id;
 	private String name;
