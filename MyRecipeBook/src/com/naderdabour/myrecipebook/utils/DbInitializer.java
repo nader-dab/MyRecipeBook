@@ -102,14 +102,12 @@ public class DbInitializer {
 		recipe = new Recipe();
 		recipe.setCategoryId(1);
 		recipe.setName("Chicken with sweet potatoes");
-		recipe.setImage("image1");
 		recipe.setDetails("Everything is put in an oven for 25 minutes. Very tasty.");
 		uowData.getRecipes().create(recipe);
 
 		recipe = new Recipe();
 		recipe.setCategoryId(4);
 		recipe.setName("Egg omllet");
-		recipe.setImage("image4");
 		recipe.setDetails("Fry egss in a pan for 5-10 minutes.");
 		uowData.getRecipes().create(recipe);
 	}

@@ -35,8 +35,8 @@ public class RecipeListAdapter extends ArrayAdapter<RecipeSimpleVM> {
 		TextView recipeIdTextView = (TextView) theView.findViewById(R.id.recipeIdTextView);
 		TextView recipeNameTextView = (TextView) theView.findViewById(R.id.recipeNameTextView);
 		ImageView recipeImageView = (ImageView) theView.findViewById(R.id.recipeImageView);
-		
-		recipeIdTextView.setText(currentRecipe.getId() + "");
+
+		recipeIdTextView.setText(Long.toString(currentRecipe.getId()));
 		recipeNameTextView.setText(currentRecipe.getName());
 
 		int imageResource = getImageRecource(currentRecipe.getImage());
@@ -52,6 +52,7 @@ public class RecipeListAdapter extends ArrayAdapter<RecipeSimpleVM> {
 	}
 	
 	private int getImageRecource(String name){
+		
 		int imageResource = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
 		return imageResource;
 	}

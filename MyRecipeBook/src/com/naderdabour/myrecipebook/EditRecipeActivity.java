@@ -120,20 +120,36 @@ public class EditRecipeActivity extends Activity {
 			
 			recipe.setName(recipeTitleEditText.getText().toString());
 			recipe.setDetails(recipeDetailsEditText.getText().toString());
-			Log.v("EditRecipe onClick details", recipe.getDetails());
 			recipe.setCategory(categories.get(categorySpinner.getSelectedItemPosition()));
 			recipe.setImage(MainActivity.CATEGORY_IMAGE + recipe.getCategory().getId());
+			
+			List<IngredientVM> ingredients = getIngredientsFromTableLayout();
+			
+			recipe.setIngredients(ingredients);
+			
+			Intent intent = new Intent();
+			
+			intent.putExtra(MainActivity.RECIPE_VIEW_MODEL, recipe);
+			setResult(RESULT_OK, intent);
+			finish();
+		}
+
+		private List<IngredientVM> getIngredientsFromTableLayout() {
 			
 			List<IngredientVM> ingredients = new ArrayList<IngredientVM>();
 			
 			for (int i = 0; i < ingredientsScrollViewTableLayout.getChildCount(); i++) {
+				
 				View ingredientView = ingredientsScrollViewTableLayout.getChildAt(i);
+				
 				EditText ingredientProductEditText = (EditText) ingredientView.findViewById(R.id.ingredientProductEditText);
 				EditText ingredientQuantityEditText = (EditText) ingredientView.findViewById(R.id.ingredientQuantityEditText);
 				Spinner ingredientMeasurementSpinner = (Spinner) ingredientView.findViewById(R.id.ingredientMeasurementSpinner);
 				
-				if(ingredientProductEditText.getText().length() == 0 
-						|| ingredientQuantityEditText.getText().length() == 0){
+				boolean productIsEmpty = ingredientProductEditText.getText().length() == 0;
+				boolean ingredientIsEmpty = ingredientQuantityEditText.getText().length() == 0;
+				
+				if(productIsEmpty || ingredientIsEmpty){
 					continue;
 				}
 				
@@ -147,13 +163,7 @@ public class EditRecipeActivity extends Activity {
 				ingredients.add(ingredientVM);
 			}
 			
-			recipe.setIngredients(ingredients);
-			
-			Intent intent = new Intent();
-			
-			intent.putExtra(MainActivity.RECIPE_VIEW_MODEL, recipe);
-			setResult(RESULT_OK, intent);
-			finish();
+			return ingredients;
 		}		
 	};
 
@@ -304,18 +314,15 @@ public class EditRecipeActivity extends Activity {
 		ingredientsScrollViewTableLayout.addView(ingredientRow);
 	}
     
-
+   
 	@Override
-    public void onBackPressed() {
-	
-		
+	public void onBackPressed() {
 		cancelActivity();
-    }
+	}
 	
 	private void cancelActivity(){
 		Intent intent = new Intent();
 		setResult(RESULT_CANCELED, intent);
 		finish();
-
 	}
 }

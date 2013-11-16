@@ -17,10 +17,10 @@
     <string name="recipe_details">Details</string>
     <string name="recipe_details_hint">Enter Preparation Details</string>
     <string name="recipe_create_button">Create</string>
-    <string name="recipe_edit_button">Update</string>
+    <string name="recipe_edit_button">Save</string>
     <string name="recipe_delete">Delete Recipe</string>
     <string name="recipe_new_title">New Recipe</string>
-    <string name="recipe_edit_title">View/Edit Recipe</string>
+    <string name="recipe_edit_title">View Recipe</string>
     
     <string name="recipe_not_saved">Recipe not Saved</string>
     <string name="recipe_changes_lost">All changes will be lost</string>
@@ -34,6 +34,10 @@
     <string name="ingredient_measurement">Select Measurement</string>
     <string name="ingredient_product">Enter Product</string>
     <string name="ingredient_remove">Remove ingredient</string>
+    
+    <string name="get_remote_error">Remote Error</string>
+    <string name="cannot_get_recipes">Cannot Get Recipe Information</string>
+    
     
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>

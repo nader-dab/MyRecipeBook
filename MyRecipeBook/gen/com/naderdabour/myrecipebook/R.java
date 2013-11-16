@@ -45,7 +45,7 @@ public final class R {
         public static final int categorySpinner=0x7f080009;
         public static final int categoryTitleTextView=0x7f080007;
         public static final int detailsTitleTextView=0x7f08000f;
-        public static final int get_recipe=0x7f080022;
+        public static final int get_recipe=0x7f080021;
         public static final int ingredientAddButton=0x7f08000b;
         public static final int ingredientMeasurementSpinner=0x7f080018;
         public static final int ingredientProductEditText=0x7f080019;
@@ -53,7 +53,7 @@ public final class R {
         public static final int ingredientsScrollViewTableLayout=0x7f08000d;
         public static final int measurementIdTextView=0x7f08001a;
         public static final int measurementNameTextView=0x7f08001b;
-        public static final int my_recipe=0x7f080021;
+        public static final int my_recipe=0x7f080022;
         public static final int recipeDetailsEditText=0x7f080012;
         public static final int recipeIdTextView=0x7f08001d;
         public static final int recipeImageView=0x7f08001f;
@@ -89,9 +89,11 @@ public final class R {
         public static final int add_ingredient=0x7f050005;
         public static final int add_recipe=0x7f050002;
         public static final int app_name=0x7f050000;
-        public static final int cancel=0x7f05001b;
+        public static final int cancel=0x7f05001d;
+        public static final int cannot_get_recipes=0x7f05001b;
         public static final int get_recipe=0x7f050003;
-        public static final int image_description=0x7f05001c;
+        public static final int get_remote_error=0x7f05001a;
+        public static final int image_description=0x7f05001e;
         public static final int ingredient_measurement=0x7f050017;
         public static final int ingredient_product=0x7f050018;
         public static final int ingredient_quantity=0x7f050016;
@@ -100,7 +102,7 @@ public final class R {
         public static final int invalid_recipe=0x7f050013;
         public static final int invalid_recipe_title=0x7f050014;
         public static final int my_recipe=0x7f050004;
-        public static final int ok=0x7f05001a;
+        public static final int ok=0x7f05001c;
         public static final int recipe_category=0x7f050008;
         public static final int recipe_changes_lost=0x7f050012;
         public static final int recipe_create_button=0x7f05000c;

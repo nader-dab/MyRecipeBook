@@ -26,6 +26,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends ListActivity {
 
@@ -40,33 +41,38 @@ public class MainActivity extends ListActivity {
 	private static final int DELETE_RECIPE_MENU_ID = 101;
 	private static final int ADD_RECIPE_ACTIVITY = 102;
 	private static final int EDIT_RECIPE_ACTIVITY = 103;
+	public static final int EDIT_REMOTE_RECIPE_ACTIVITY = 103;
 
 	private IUowData uowData;
 	private ViewModelHelper vmHelper;
 	private List<Recipe> recipes;
 	private int currentItem;
+	private boolean isInMyRecipes;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		this.registerForContextMenu(getListView());
+
 		uowData = new UowData(this);
 		((IReadable) uowData).open();
 
 		DbInitializer.init(uowData); 
 
-		recipes = uowData.getRecipes().findAll();
-
 		vmHelper = new ViewModelHelper(uowData);
 
-		this.registerForContextMenu(getListView());
+		refreshMyRecipes();
 
-		refreshDisplay();
 	}
 
 
-	private void refreshDisplay() {
+	private void refreshMyRecipes() {
+		
+		isInMyRecipes = true;
+
+		recipes = uowData.getRecipes().findFiltered(null, DatabaseHelper.TABLE_RECIPE_ID + " DESC");
 
 		List<RecipeSimpleVM> recipesVM = vmHelper.getRecipeSimpleVM(recipes);
 
@@ -83,8 +89,10 @@ public class MainActivity extends ListActivity {
 
 		currentItem = (int)info.id;
 
-		menu.add(0, DELETE_RECIPE_MENU_ID, 0, R.string.recipe_delete);
-		menu.add(0, 0, 0, R.string.cancel);
+		if(isInMyRecipes){
+			menu.add(0, DELETE_RECIPE_MENU_ID, 0, R.string.recipe_delete);
+			menu.add(0, 0, 0, R.string.cancel);
+		}
 	}
 
 	@Override
@@ -128,7 +136,11 @@ public class MainActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.add_recipe: addRecipeActivity();
+		case R.id.add_recipe: addNewRecipe();
+		break;
+		case R.id.my_recipe: refreshMyRecipes();
+		break;
+		case R.id.get_recipe: getRemoteRecipes();
 		break;
 		default:
 			break;
@@ -137,57 +149,79 @@ public class MainActivity extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void getRemoteRecipes() {
+		isInMyRecipes = false; 
+		RecipeFetcher recipeFetcher = new RecipeFetcher(MainActivity.this);
+		recipeFetcher.getRemote();
+	}
+
+
 	private void deleteRecipe(){
 
 		long recipeId = recipes.get(currentItem).getId();
 		deleteRecipe(recipeId);
-		recipes = uowData.getRecipes().findAll();
-		refreshDisplay();
-		
+		refreshMyRecipes();
+
 	}
-	
-	private void addRecipeActivity() {
+
+	private void addNewRecipe() {
 
 		RecipeFullVM recipeToCreate = new RecipeFullVM();
 
 		Intent intent = new Intent(MainActivity.this, EditRecipeActivity.class);
 
 		putSpinnerData(intent);
-		
+
 		intent.putExtra(NEW_RECIPE, true);
 		intent.putExtra(RECIPE_VIEW_MODEL, recipeToCreate);
 
 		startActivityForResult(intent, ADD_RECIPE_ACTIVITY);
 	}
-	
+
 	private void putSpinnerData(Intent intent) {
-		
+
 		List<Category> categories = uowData.getCategories().findAll();
 		List<Measurement> measurements = uowData.getMeasurements().findAll();
-		
+
 		ArrayList<CategoryVM> categoriesToDisplay = 
 				(ArrayList<CategoryVM>) vmHelper.getCategoryVM(categories);
-		
+
 		ArrayList<MeasurementVM> measurementsToDisplay = 
 				(ArrayList<MeasurementVM>) vmHelper.getMeasurementVM(measurements);
-		
+
 		intent.putParcelableArrayListExtra(CATEGORY_VIEW_MODEL, categoriesToDisplay);
 		intent.putParcelableArrayListExtra(MEASUREMENT_VIEW_MODEL, measurementsToDisplay);
 	}
 
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		
-		RecipeFullVM recipe = vmHelper.getRecipeFullVM(recipes.get(position).getId());
-		
+	protected void onListItemClick(ListView l, View view, int position, long id) {
+		super.onListItemClick(l, view, position, id);
+
+		if(isInMyRecipes){
+			
+			RecipeFullVM recipe = vmHelper.getRecipeFullVM(recipes.get(position).getId());
+			
+			if(recipe != null){
+				Intent intent = getEditIntent();
+				intent.putExtra(RECIPE_VIEW_MODEL, recipe);
+				startActivityForResult(intent, EDIT_RECIPE_ACTIVITY);
+			}
+		} else {
+			
+			RecipeFetcher recipeFetcher = new RecipeFetcher(MainActivity.this);
+			TextView remoteRecipeId = (TextView) view.findViewById(R.id.recipeIdTextView);
+			int remoteId = Integer.parseInt(remoteRecipeId.getText().toString());
+			Intent intent = getEditIntent();
+			recipeFetcher.getRemote(remoteId, intent);
+		}
+	}
+
+	private Intent getEditIntent() {
 		Intent intent = new Intent(this, EditRecipeActivity.class);	
 		putSpinnerData(intent);
-		intent.putExtra(RECIPE_VIEW_MODEL, recipe);
-    	intent.putExtra(EDIT_RECIPE, true);
-    	
-    	startActivityForResult(intent, EDIT_RECIPE_ACTIVITY);
+		intent.putExtra(EDIT_RECIPE, true);
+		return intent;
 	}
 
 
@@ -195,16 +229,16 @@ public class MainActivity extends ListActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		((IReadable) uowData).open();
-		
+
 		if(requestCode == ADD_RECIPE_ACTIVITY && resultCode == RESULT_OK){
 
 			RecipeFullVM recipeToAdd = data.getParcelableExtra(RECIPE_VIEW_MODEL);
-			
+
 			Log.v("recipeToAdd", recipeToAdd.toString());
 			addRecipeToDataStorage(recipeToAdd);
-			
-		} else if(requestCode == EDIT_RECIPE_ACTIVITY && resultCode == RESULT_OK){
-			
+
+		} else if((requestCode == EDIT_RECIPE_ACTIVITY || requestCode == EDIT_REMOTE_RECIPE_ACTIVITY) && resultCode == RESULT_OK){
+
 			RecipeFullVM recipeToUpdate = data.getParcelableExtra(RECIPE_VIEW_MODEL);
 			deleteRecipe(recipeToUpdate.getId());
 			addRecipeToDataStorage(recipeToUpdate);
@@ -214,35 +248,34 @@ public class MainActivity extends ListActivity {
 	}
 
 	private void addRecipeToDataStorage(RecipeFullVM recipeToAdd) {
-		
+
 		Recipe recipe = new Recipe();
-		
+
 		recipe.setName(recipeToAdd.getName());
 		recipe.setCategoryId(recipeToAdd.getCategory().getId());
 		recipe.setDetails(recipeToAdd.getDetails());
 		Log.v("Main addRecipeToDataStorage details", recipe.getDetails());
 		recipe.setImage(recipeToAdd.getImage());
-		
+
 		recipe = uowData.getRecipes().create(recipe);
-		
+
 		for (IngredientVM ingredientVM : recipeToAdd.getIngredients()) {
-			
+
 			Product product = new Product();
 			product.setName(ingredientVM.getProduct().getName());
-			
+
 			product = uowData.getProducts().create(product);
-			
+
 			Ingredient ingredient = new Ingredient();
 			ingredient.setRecipeId(recipe.getId());
 			ingredient.setMeasurementId(ingredientVM.getMeasurement().getId());
 			ingredient.setProductId(product.getId());
 			ingredient.setQuantity(ingredientVM.getQuantity());
-			
+
 			uowData.getIngredients().create(ingredient);
 		}
-		
-		recipes = uowData.getRecipes().findAll();
-		refreshDisplay();
+
+		refreshMyRecipes();
 	}
 
 

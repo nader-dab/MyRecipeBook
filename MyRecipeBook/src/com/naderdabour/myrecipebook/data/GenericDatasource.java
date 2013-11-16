@@ -73,7 +73,7 @@ public abstract class GenericDatasource<E> implements IDatasource<E>, IReadable 
 	public boolean remove(long id) {
 		
 		String where = primaryKey + "=" + id;
-		Log.v("Removing", "table " + tableName + " id" + id);
+		
 		int rowsAffected =  database.delete(tableName, where, null);
 		
 		return (rowsAffected != 0);
