@@ -9,7 +9,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static DatabaseHelper databaseHelperInstance = null;
 	
 	private static final String DATABASE_NAME = "myrecipebook.db";
-	private static final int DATABASE_VERSION = 9;
+	private static final int DATABASE_VERSION = 10;
 	
 	public static final String TABLE_CATEGORY = "categories";
 	public static final String TABLE_CATEGORY_ID = "categoryId";

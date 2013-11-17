@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -216,7 +215,6 @@ public class MainActivity extends ListActivity {
 
 			RecipeFullVM recipeToAdd = data.getParcelableExtra(RECIPE_VIEW_MODEL);
 
-			Log.v("recipeToAdd", recipeToAdd.toString());
 			vmHelper.addRecipeFullVM(recipeToAdd);
 			refreshMyRecipes();
 

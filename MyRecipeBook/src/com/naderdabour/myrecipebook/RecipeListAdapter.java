@@ -56,6 +56,9 @@ public class RecipeListAdapter extends ArrayAdapter<RecipeSimpleVM> {
 			} catch (IOException e) {
 				int categoryImage = getImageRecource(MainActivity.CATEGORY_IMAGE + currentRecipe.getCategory().getId());
 				recipeImageView.setImageResource(categoryImage);
+			} catch (NullPointerException e){
+				int categoryImage = getImageRecource(MainActivity.CATEGORY_IMAGE + currentRecipe.getCategory().getId());
+				recipeImageView.setImageResource(categoryImage);
 			}
 		}
 		
