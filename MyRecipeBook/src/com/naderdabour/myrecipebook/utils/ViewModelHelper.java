@@ -3,6 +3,8 @@ package com.naderdabour.myrecipebook.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import com.naderdabour.myrecipebook.data.DatabaseHelper;
 import com.naderdabour.myrecipebook.data.IUowData;
 import com.naderdabour.myrecipebook.models.Category;
@@ -182,5 +184,48 @@ public class ViewModelHelper {
 		}
 
 		return vmListToReturn;
+	}
+	
+	public void addRecipeFullVM(RecipeFullVM recipeToAdd) {
+
+		Recipe recipe = new Recipe();
+
+		recipe.setName(recipeToAdd.getName());
+		recipe.setCategoryId(recipeToAdd.getCategory().getId());
+		recipe.setDetails(recipeToAdd.getDetails());
+		Log.v("Main addRecipeToDataStorage details", recipe.getDetails());
+		recipe.setImage(recipeToAdd.getImage());
+
+		recipe = uowData.getRecipes().create(recipe);
+
+		for (IngredientVM ingredientVM : recipeToAdd.getIngredients()) {
+
+			Product product = new Product();
+			product.setName(ingredientVM.getProduct().getName());
+
+			product = uowData.getProducts().create(product);
+
+			Ingredient ingredient = new Ingredient();
+			ingredient.setRecipeId(recipe.getId());
+			ingredient.setMeasurementId(ingredientVM.getMeasurement().getId());
+			ingredient.setProductId(product.getId());
+			ingredient.setQuantity(ingredientVM.getQuantity());
+
+			uowData.getIngredients().create(ingredient);
+		}
+	}
+	
+	public void deleteRecipe(long recipeId) {
+
+		List<Ingredient> ingredients = uowData.getIngredients()
+				.findFiltered(DatabaseHelper.TABLE_INGREDIENT_RECIPE_ID +"=" + recipeId, null);
+
+		for (Ingredient ingredient : ingredients) {
+
+			uowData.getIngredients().remove(ingredient.getId());
+			uowData.getProducts().remove(ingredient.getProductId());
+		}
+
+		uowData.getRecipes().remove(recipeId);
 	}
 }

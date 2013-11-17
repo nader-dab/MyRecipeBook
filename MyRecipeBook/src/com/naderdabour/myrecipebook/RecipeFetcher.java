@@ -40,7 +40,7 @@ public class RecipeFetcher {
 	private static final String RECIPE_ID = "id";
 	private static final String RECIPE_NAME = "name";
 	private static final String RECIPE_CATEGORY = "categoryId";
-	private static final String RECIPE_DETAILS = "deatails";
+	private static final String RECIPE_DETAILS = "details";
 	private static final String RECIPE_INGREDIENTS = "ingredients";
 	private static final String INGREDIENT_MEASUREMENT = "measurement";
 	private static final String INGREDIENT_PRODUCT = "product";
@@ -156,7 +156,8 @@ public class RecipeFetcher {
 
 					inputStream = entity.getContent();
 
-					BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(inputStream, "UTF-8"), 8);
 
 					result = readInformation(reader);
 
@@ -166,15 +167,18 @@ public class RecipeFetcher {
 				}
 			}
 			catch (IOException e) {
+				
 				recipeResponseOK = false;
 				Log.v(LOG, e.toString());
 			}
 			finally{
 				try{
 					if(inputStream!= null) {
+						
 						inputStream.close();
 					}
 				}catch (IOException e) {
+					
 					recipeResponseOK = false;
 					Log.v(LOG, e.toString());
 				}

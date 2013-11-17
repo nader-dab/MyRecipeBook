@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_weight="1" >
 
-    <TableLayout
+   <TableLayout
         android:id="@+id/TableLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -40,7 +40,9 @@
                 android:ems="10"
                 android:hint="@string/recipe_title_hint"
                 android:inputType="textCapSentences"
-                android:singleLine="true" >
+                android:singleLine="true" 
+                >
+                
             </EditText>
         </TableRow>
 
@@ -74,7 +76,56 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow4"
+            android:id="@+id/tableRow5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#444444" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/useDefaultImageButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#444444"
+                    android:paddingLeft="@dimen/padding"
+                    android:singleLine="true"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/recipe_image_default_button"
+                    android:textAppearance="@android:style/TextAppearance.Large"
+                    android:textColor="#FFFFFF" />
+
+                <Button
+                    android:id="@+id/takeCameraImageButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#444444"
+                    android:paddingLeft="@dimen/padding"
+                    android:singleLine="true"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/recipe_image_take_button"
+                    android:textAppearance="@android:style/TextAppearance.Large"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/recipeImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/category_image1" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#444444" >
@@ -93,7 +144,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow5"
+            android:id="@+id/tableRow7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -107,7 +158,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow6"
+            android:id="@+id/tableRow8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#444444" >
@@ -123,14 +174,9 @@
                 android:textColor="@android:color/white" />
         </TableRow>
 
-        <TableRow
-            android:id="@+id/tableRow7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow8"
+            android:id="@+id/tableRow9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -148,7 +194,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow9"
+            android:id="@+id/tableRow10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 

@@ -1,8 +1,12 @@
 package com.naderdabour.myrecipebook;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import com.naderdabour.myrecipebook.utils.ImageHelper;
 import com.naderdabour.myrecipebook.viewmodels.*;
 
 import android.app.Activity;
@@ -10,6 +14,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.inputmethodservice.InputMethodService;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,12 +32,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 
 public class EditRecipeActivity extends Activity {
 	
+	private static final String USER_IMAGE = "recipes";
 	private static final int REMOVE_INGREDIENT = 101;
+	private static final int TAKE_PICTURE = 102;
 	private List<CategoryVM> categories;
 	private List<MeasurementVM> measurements;
 	private RecipeFullVM recipe;
@@ -42,12 +50,17 @@ public class EditRecipeActivity extends Activity {
 	private EditText recipeDetailsEditText;
 	private Button saveRecipeButton;
 	private Button ingredientAddButton;
+	private Button useDefaultImageButton;
+	private Button takeCameraImageButton;
 	private TableLayout ingredientsScrollViewTableLayout; 
+	private ImageView recipeImageView;
 	
 	private View currentItem;
-	private boolean hasChange;
 	private boolean isEditing;
 	private boolean isCreating;
+	private boolean isUserImage;
+	private String imagePath;
+	private ImageHelper imageHelper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +69,7 @@ public class EditRecipeActivity extends Activity {
 		setContentView(R.layout.activity_edit_recipe);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
+		imageHelper = new ImageHelper(this);
 		initComponents();
 		
 		Intent intent = getIntent();
@@ -69,36 +82,14 @@ public class EditRecipeActivity extends Activity {
 		
 		isEditing = intent.getBooleanExtra(MainActivity.EDIT_RECIPE, false);
 		isCreating = intent.getBooleanExtra(MainActivity.NEW_RECIPE, false);
-		
-		saveRecipeButton.setOnClickListener(saveRecipeButtonListener);
-		ingredientAddButton.setOnClickListener(ingredientAddButtonListener);
-		
+
+
 		if(isEditing){
 			handleEditing();
 		} else if(isCreating){
 			handleCreating();
 		}
 	}
-	private TextWatcher textChangedListener = new TextWatcher() {
-		
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			hasChange = true;
-		}
-		
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void afterTextChanged(Editable s) {
-			// TODO Auto-generated method stub
-			
-		}
-	};
 	
 	private OnClickListener ingredientAddButtonListener = new OnClickListener() {
 		
@@ -121,7 +112,13 @@ public class EditRecipeActivity extends Activity {
 			recipe.setName(recipeTitleEditText.getText().toString());
 			recipe.setDetails(recipeDetailsEditText.getText().toString());
 			recipe.setCategory(categories.get(categorySpinner.getSelectedItemPosition()));
-			recipe.setImage(MainActivity.CATEGORY_IMAGE + recipe.getCategory().getId());
+			
+			if(isUserImage){
+				recipe.setImage(imagePath);
+			} else {
+				
+				recipe.setImage(MainActivity.CATEGORY_IMAGE + recipe.getCategory().getId());
+			}
 			
 			List<IngredientVM> ingredients = getIngredientsFromTableLayout();
 			
@@ -184,6 +181,7 @@ public class EditRecipeActivity extends Activity {
 	
 	private void handleCreating() {
 		setTitle(R.string.recipe_new_title);
+		isUserImage = false;
 		recipeTitleEditText.requestFocus();
 		saveRecipeButton.setText(R.string.recipe_create_button);
 		
@@ -196,6 +194,24 @@ public class EditRecipeActivity extends Activity {
 		categorySpinner.setSelection((int)(recipe.getCategory().getId() - 1));
 		recipeDetailsEditText.setText(recipe.getDetails());
 		saveRecipeButton.setText(R.string.recipe_edit_button);
+		
+		if(recipe.getName().startsWith(MainActivity.CATEGORY_IMAGE)){
+			setDefaultImageResource();
+		} else {
+			isUserImage = true;
+			imagePath = recipe.getImage();
+			
+			try {
+				recipeImageView.setImageBitmap(imageHelper.readFile(imagePath));
+				
+			} catch (IOException e) {
+				setDefaultImageResource();
+			} catch (NullPointerException e){
+				setDefaultImageResource();
+			}
+		}
+		
+		
 		for (IngredientVM ingredient : recipe.getIngredients()) {
 			inflateExistingIngredient(ingredient);
 		}
@@ -211,14 +227,43 @@ public class EditRecipeActivity extends Activity {
 		recipeDetailsEditText = (EditText) findViewById(R.id.recipeDetailsEditText);
 		saveRecipeButton = (Button) findViewById(R.id.saveRecipeButton);
 		ingredientAddButton = (Button) findViewById(R.id.ingredientAddButton);
+		useDefaultImageButton = (Button) findViewById(R.id.useDefaultImageButton);
+		takeCameraImageButton = (Button) findViewById(R.id.takeCameraImageButton);
 		ingredientsScrollViewTableLayout = (TableLayout) findViewById(R.id.ingredientsScrollViewTableLayout);
 		categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
+		recipeImageView = (ImageView) findViewById(R.id.recipeImageView);
 		
-		recipeTitleEditText.addTextChangedListener(textChangedListener);
-		recipeDetailsEditText.addTextChangedListener(textChangedListener);
+		saveRecipeButton.setOnClickListener(saveRecipeButtonListener);
+		ingredientAddButton.setOnClickListener(ingredientAddButtonListener);
+		useDefaultImageButton.setOnClickListener(useDefaultImageButtonListener);
+		takeCameraImageButton.setOnClickListener(takeCameraImageButtonListener);
 	}
 	
+	private OnClickListener takeCameraImageButtonListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+			startActivityForResult(intent, TAKE_PICTURE);
+		}
+	};
 	
+	private void setDefaultImageResource(){
+		isUserImage = false;
+		imagePath = MainActivity.CATEGORY_IMAGE + (categorySpinner.getSelectedItemPosition() + 1);
+		int imageResource = getResources().getIdentifier(imagePath, "drawable", getPackageName());
+		if(imageResource != 0){
+			recipeImageView.setImageResource(imageResource);
+		}
+	}
+	
+	private OnClickListener useDefaultImageButtonListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			setDefaultImageResource();
+		}
+	};
 	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -283,9 +328,8 @@ public class EditRecipeActivity extends Activity {
 		measurementSpinner.setSelection((int)(ingredient.getMeasurement().getId() - 1));
 		
 		productEditText.setText(ingredient.getProduct().getName());
-		productEditText.addTextChangedListener(textChangedListener);
+
 		quantityEditText.setText(Double.toString(ingredient.getQuantity()));
-		quantityEditText.addTextChangedListener(textChangedListener);
 		
 		registerForContextMenu(ingredientRow);
 		ingredientsScrollViewTableLayout.addView(ingredientRow);
@@ -303,16 +347,36 @@ public class EditRecipeActivity extends Activity {
 		EditText quantityEditText = (EditText) ingredientRow.findViewById(R.id.ingredientQuantityEditText);
 		
 		quantityEditText.requestFocus();
-		
-		productEditText.addTextChangedListener(textChangedListener);
-		quantityEditText.addTextChangedListener(textChangedListener);
-		
+
 		measurementSpinner.setAdapter(
 				new ArrayAdapter<MeasurementVM>(this, android.R.layout.simple_list_item_1, measurements));
 		
 		registerForContextMenu(ingredientRow);
 		ingredientsScrollViewTableLayout.addView(ingredientRow);
 	}
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	
+    	if (requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
+    		
+    		isUserImage = true;
+			Bundle extras = data.getExtras();
+			Bitmap picture = (Bitmap) extras.get("data"); 
+			recipeImageView.setImageBitmap(picture);
+			
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			picture.compress(Bitmap.CompressFormat.PNG, 100, stream);
+			byte[] byteArray = stream.toByteArray();
+			
+			try {
+				String fileName = USER_IMAGE + UUID.randomUUID() + ".png";
+				imagePath = imageHelper.createFile(fileName, byteArray);
+			} catch (IOException e) {
+				setDefaultImageResource();
+			}
+		}
+    }
     
    
 	@Override

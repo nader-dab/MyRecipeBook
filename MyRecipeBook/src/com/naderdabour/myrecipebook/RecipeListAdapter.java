@@ -1,7 +1,9 @@
 package com.naderdabour.myrecipebook;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.naderdabour.myrecipebook.utils.ImageHelper;
 import com.naderdabour.myrecipebook.viewmodels.RecipeSimpleVM;
 
 import android.content.Context;
@@ -38,14 +40,23 @@ public class RecipeListAdapter extends ArrayAdapter<RecipeSimpleVM> {
 
 		recipeIdTextView.setText(Long.toString(currentRecipe.getId()));
 		recipeNameTextView.setText(currentRecipe.getName());
-
-		int imageResource = getImageRecource(currentRecipe.getImage());
-		int categoryImage = getImageRecource(MainActivity.CATEGORY_IMAGE + currentRecipe.getCategory().getId());
-
-		if(imageResource != 0){
+		
+		
+		if(currentRecipe.getName().startsWith(MainActivity.CATEGORY_IMAGE)){
+			int imageResource = getImageRecource(currentRecipe.getImage());
 			recipeImageView.setImageResource(imageResource);
-		} else if(categoryImage != 0){
-			recipeImageView.setImageResource(categoryImage);
+		} else {
+
+			String imagePath = currentRecipe.getImage();
+			
+			try {
+				ImageHelper imageHelper = new ImageHelper(context);
+				recipeImageView.setImageBitmap(imageHelper.readFile(imagePath));
+				
+			} catch (IOException e) {
+				int categoryImage = getImageRecource(MainActivity.CATEGORY_IMAGE + currentRecipe.getCategory().getId());
+				recipeImageView.setImageResource(categoryImage);
+			}
 		}
 		
 		return theView;
