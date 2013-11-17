@@ -108,7 +108,7 @@ public class DbInitializer {
 		recipe = new Recipe();
 		recipe.setCategoryId(4);
 		recipe.setName("Egg omllet");
-		recipe.setDetails("Fry egss in a pan for 5-10 minutes.");
+		recipe.setDetails("Fry eggs in a pan for 5-10 minutes.");
 		uowData.getRecipes().create(recipe);
 	}
 

@@ -82,7 +82,7 @@ public class IngredientVM implements Parcelable {
 		
 		@Override
 		public IngredientVM createFromParcel(Parcel source) {
-			// TODO Auto-generated method stub
+
 			return new IngredientVM(source);
 		}
 	};

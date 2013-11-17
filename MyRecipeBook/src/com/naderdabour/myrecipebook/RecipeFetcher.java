@@ -127,10 +127,10 @@ public class RecipeFetcher {
 				listView.setAdapter(adapter);
 
 			} else {
-				openSelectedRecipeIntent.putExtra(MainActivity.RECIPE_VIEW_MODEL, selectedRecipe);
+				openSelectedRecipeIntent.putExtra(RecipesActivity.RECIPE_VIEW_MODEL, selectedRecipe);
 
 				((Activity)context).startActivityForResult(
-						openSelectedRecipeIntent, MainActivity.EDIT_REMOTE_RECIPE_ACTIVITY);
+						openSelectedRecipeIntent, RecipesActivity.EDIT_REMOTE_RECIPE_ACTIVITY);
 			}
 		}
 
@@ -246,7 +246,7 @@ public class RecipeFetcher {
 			int id = jsonObject.getInt(RECIPE_ID);
 			String name = jsonObject.getString(RECIPE_NAME);
 			int categoryId = jsonObject.getInt(RECIPE_CATEGORY);
-			String image = MainActivity.CATEGORY_IMAGE + categoryId;
+			String image = RecipesActivity.CATEGORY_IMAGE + categoryId;
 			CategoryVM category = new CategoryVM();
 			category.setId(categoryId);
 			RecipeSimpleVM recipeToReturn = new RecipeSimpleVM(id, name,category, image);

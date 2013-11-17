@@ -6,7 +6,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+
+// A generic class that holds the common functionality for interacting
+// with the Database. Specific Datasource objects must extend this class
+// and implement its abstract methods.
 
 public abstract class GenericDatasource<E> implements IDatasource<E>, IReadable {
 
@@ -24,7 +27,7 @@ public abstract class GenericDatasource<E> implements IDatasource<E>, IReadable 
 		this.allColumns = allColumns; 
 		this.primaryKey = allColumns[0];
 	}
-
+	
 	protected abstract List<E> cursorToList(Cursor cursor);
 	
 	protected abstract long getEntryId(E entry);
@@ -33,10 +36,11 @@ public abstract class GenericDatasource<E> implements IDatasource<E>, IReadable 
 	
 	protected abstract void setEntryId(E entry, long insertId);
 	
-	
 	@Override
 	public List<E> findAll() {
 		
+		// Finds entries in the database by specifying
+		// a table name and table columns
 		Cursor cursor = database.query(tableName, 
 				allColumns, null, null, null, null, null);
 		

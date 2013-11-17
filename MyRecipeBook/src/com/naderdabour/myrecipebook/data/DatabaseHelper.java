@@ -4,12 +4,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+// A helper class that will create the SQLite database and
+// tables for the MyRecipeBook application.
 public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	private static DatabaseHelper databaseHelperInstance = null;
 	
 	private static final String DATABASE_NAME = "myrecipebook.db";
-	private static final int DATABASE_VERSION = 10;
+	private static final int DATABASE_VERSION = 11;
 	
 	public static final String TABLE_CATEGORY = "categories";
 	public static final String TABLE_CATEGORY_ID = "categoryId";

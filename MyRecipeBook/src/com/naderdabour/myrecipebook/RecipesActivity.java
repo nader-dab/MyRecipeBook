@@ -13,7 +13,6 @@ import com.naderdabour.myrecipebook.utils.ViewModelHelper;
 import com.naderdabour.myrecipebook.viewmodels.*;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.view.ContextMenu;
@@ -26,7 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends ListActivity {
+public class RecipesActivity extends ListActivity {
 
 	public static final String RECIPE_VIEW_MODEL = ".viewmodels.RecipeFullVM";
 	public static final String CATEGORY_VIEW_MODEL = ".viewmodels.CategoryVM";
@@ -50,7 +49,7 @@ public class MainActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_recipes);
 
 		this.registerForContextMenu(getListView());
 
@@ -67,7 +66,7 @@ public class MainActivity extends ListActivity {
 
 
 	private void refreshMyRecipes() {
-		
+
 		isInMyRecipes = true;
 
 		recipes = uowData.getRecipes().findFiltered(null, DatabaseHelper.TABLE_RECIPE_ID + " DESC");
@@ -110,7 +109,7 @@ public class MainActivity extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.recipes, menu);
 
 		return true;
 	}
@@ -134,13 +133,13 @@ public class MainActivity extends ListActivity {
 
 	private void getRemoteRecipes() {
 		isInMyRecipes = false; 
-		RecipeFetcher recipeFetcher = new RecipeFetcher(MainActivity.this);
+		RecipeFetcher recipeFetcher = new RecipeFetcher(RecipesActivity.this);
 		recipeFetcher.getRemote();
 	}
 
 
 	private void deleteRecipe(){
-		
+
 		long recipeId = recipes.get(currentItem).getId();
 		vmHelper.deleteRecipe(recipeId);
 		refreshMyRecipes();
@@ -151,7 +150,7 @@ public class MainActivity extends ListActivity {
 
 		RecipeFullVM recipeToCreate = new RecipeFullVM();
 
-		Intent intent = new Intent(MainActivity.this, EditRecipeActivity.class);
+		Intent intent = new Intent(RecipesActivity.this, EditRecipeActivity.class);
 
 		putSpinnerData(intent);
 
@@ -181,17 +180,17 @@ public class MainActivity extends ListActivity {
 		super.onListItemClick(l, view, position, id);
 
 		if(isInMyRecipes){
-			
+
 			RecipeFullVM recipe = vmHelper.getRecipeFullVM(recipes.get(position).getId());
-			
+
 			if(recipe != null){
 				Intent intent = getEditIntent();
 				intent.putExtra(RECIPE_VIEW_MODEL, recipe);
 				startActivityForResult(intent, EDIT_RECIPE_ACTIVITY);
 			}
 		} else {
-			
-			RecipeFetcher recipeFetcher = new RecipeFetcher(MainActivity.this);
+
+			RecipeFetcher recipeFetcher = new RecipeFetcher(RecipesActivity.this);
 			TextView remoteRecipeId = (TextView) view.findViewById(R.id.recipeIdTextView);
 			int remoteId = Integer.parseInt(remoteRecipeId.getText().toString());
 			Intent intent = getEditIntent();
@@ -221,6 +220,7 @@ public class MainActivity extends ListActivity {
 		} else if((requestCode == EDIT_RECIPE_ACTIVITY || requestCode == EDIT_REMOTE_RECIPE_ACTIVITY) && resultCode == RESULT_OK){
 
 			RecipeFullVM recipeToUpdate = data.getParcelableExtra(RECIPE_VIEW_MODEL);
+
 			vmHelper.deleteRecipe(recipeToUpdate.getId());
 			vmHelper.addRecipeFullVM(recipeToUpdate);
 			refreshMyRecipes();

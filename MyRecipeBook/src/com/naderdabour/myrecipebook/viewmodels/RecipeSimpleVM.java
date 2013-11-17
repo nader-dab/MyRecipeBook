@@ -78,13 +78,13 @@ public class RecipeSimpleVM implements Parcelable {
 		
 		@Override
 		public RecipeSimpleVM[] newArray(int size) {
-			// TODO Auto-generated method stub
+
 			return new RecipeSimpleVM[size];
 		}
 		
 		@Override
 		public RecipeSimpleVM createFromParcel(Parcel source) {
-			// TODO Auto-generated method stub
+
 			return new RecipeSimpleVM(source);
 		}
 	};

@@ -2,6 +2,7 @@ package com.naderdabour.myrecipebook.data;
 
 import java.util.List;
 
+// Specifies the required methods for any Datasource object.
 public interface IDatasource<E> {
 
 	E create(E entry);

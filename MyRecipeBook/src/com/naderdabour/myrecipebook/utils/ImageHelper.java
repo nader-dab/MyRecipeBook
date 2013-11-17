@@ -21,8 +21,10 @@ public class ImageHelper {
 	}
 
 	public String createFile(String fileName, byte[] data) throws IOException{
+		
 		String savedFilePath = null;
 		FileOutputStream fos = null;
+		
 		boolean checkExternalStorage = 
 				Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
 		
