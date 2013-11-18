@@ -25,7 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class RecipesActivity extends ListActivity {
+public class RecipesActivity extends ListActivity implements IRefreshable {
 
 	public static final String RECIPE_VIEW_MODEL = ".viewmodels.RecipeFullVM";
 	public static final String CATEGORY_VIEW_MODEL = ".viewmodels.CategoryVM";
@@ -243,5 +243,11 @@ public class RecipesActivity extends ListActivity {
 		if (uowData instanceof IReadable) {
 			((IReadable) uowData).close();
 		}
+	}
+
+
+	@Override
+	public void refreshDisplay() {
+		refreshMyRecipes();
 	}
 }

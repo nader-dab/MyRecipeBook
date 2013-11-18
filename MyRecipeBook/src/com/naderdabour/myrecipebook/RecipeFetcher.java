@@ -117,6 +117,10 @@ public class RecipeFetcher {
 				alert.create();
 				AlertDialog theAlertDialog = alert.create();
 				theAlertDialog.show();
+				
+				if(context instanceof IRefreshable){
+					((IRefreshable)context).refreshDisplay();
+				}
 
 			} else if(isArrayResponce){
 
